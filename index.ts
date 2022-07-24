@@ -1,7 +1,7 @@
 /** 
  * 什么值得买自动签到评论脚本
  * 更新地址：https://github.com/charmingYouYou/smzdm_sign_ql
- * cron: 1 1 0 * * * index.js
+ * cron: 0 15 10 * * * index.js
  * new Env('什么值得买自动签到评论')
  */
 import axios, { AxiosRequestConfig } from "axios";
@@ -78,7 +78,8 @@ let postIdList = [
 //评论地址
 //家居生活 发现频道 30 - 100 页 随机页数
 const getCommitUrl = () => {
-  return `https://faxian.smzdm.com/h1s0t0f37c0p${getRandom(30, 100)}/`;
+  // return `https://faxian.smzdm.com/h1s0t0f37c0p${getRandom(30, 100)}/`;
+  return `https://faxian.smzdm.com`;
 };
 
 /**
@@ -93,7 +94,7 @@ const getPostID = (url, referer, cookie = "") => {
     .get(url, {
       headers: {
         Referer: referer,
-        Cookie: cookie,
+        // Cookie: cookie,
       },
     })
     .then((res) => {
