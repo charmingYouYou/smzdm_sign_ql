@@ -132,8 +132,6 @@ const getPostID = (url, referer, cookie = "") => {
  * @param {Object} cookie cookie信息
  */
 let smzdmCommit = (cookie: string) => {
-  //	let num = Math.floor(Math.random() * 900);
-  // let cookieName = cookieSess.username;
   let pId = postIdList[Math.floor(Math.random() * postIdList.length)];
   const url = `https://zhiyou.smzdm.com/user/comment/ajax_set_comment?callback=jQuery111006551744323225079_${new Date().getTime()}&type=3&pid=${pId}&parentid=0&vote_id=0&vote_type=&vote_group=&content=${encodeURI(
     commitList[Math.floor(Math.random() * commitList.length)]
@@ -166,7 +164,6 @@ let smzdmCommit = (cookie: string) => {
  */
 const smzdmSign = (cookie: string) => {
   const url = `https://zhiyou.smzdm.com/user/checkin/jsonp_checkin?callback=jQuery112409568846254764496_${new Date().getTime()}&_=${new Date().getTime()}`;
-  console.log("cookie", typeof cookie, cookie);
   axios
     .get(url, {
       headers: {
@@ -179,7 +176,7 @@ const smzdmSign = (cookie: string) => {
       console.log("data===", data);
       if (data.indexOf('"error_code":0') != -1) {
         console.log(`什么值得买 签到成功!!!!`);
-        sendNotifyFn(`事件: 签到成功!!!!`, cookie);
+        sendNotifyFn(`事件: 签到成功!!!!已连续签到${data.data.checkin_num}`, cookie);
       } else {
         sendNotifyFn(`事件: 签到失败\n错误内容: ${ascii2native(data)}`, cookie);
       }
@@ -207,18 +204,10 @@ const commitSetTimeout = (cookie: string, timeNum = 1) => {
     if (timeNum == 4) {
       resolve("success");
     }
-    //延迟发评论
-    setTimeout(() => {
-      //发现频道 最新
-      getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
-      setTimeout(() => {
-        console.log("cookie==", cookie);
-        smzdmCommit(cookie);
-        console.log("评论次数", timeNum);
-      }, 5000);
-    }, getRandom(40000, 1000000));
-
-    setTimeout(() => {
+    setTimeout(async () => {
+      await getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
+      await smzdmCommit(cookie);
+      console.log(`已评论${timeNum}次`)
       timeNum++;
       commitSetTimeout(cookie, timeNum);
     }, getRandom(60000, 6000000) * timeNum);
