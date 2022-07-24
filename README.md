@@ -1,0 +1,1 @@
+ql repo https://github.com/charmingYouYou/smzdm_sign_ql.git "index" "icon" "utils"
