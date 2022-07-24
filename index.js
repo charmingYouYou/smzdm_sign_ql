@@ -1,8 +1,11 @@
 "use strict";
-/**
- * 什么值得买自动签到脚本
- * cron: 0 1 * * * index.js
- * new Env('什么值得买签到评论');
+/*
+什么值得买自动签到评论脚本
+更新地址：https://github.com/charmingYouYou/smzdm_sign_ql
+
+[task_local]
+#什么值得买自动签到评论
+1 1 0 * * * index.js, tag=什么值得买自动签到脚本, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
