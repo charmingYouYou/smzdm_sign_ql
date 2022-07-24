@@ -123,8 +123,6 @@ const getPostID = (url, referer, cookie = "") => {
  * @param {Object} cookie cookie信息
  */
 let smzdmCommit = (cookie) => {
-    //	let num = Math.floor(Math.random() * 900);
-    // let cookieName = cookieSess.username;
     let pId = postIdList[Math.floor(Math.random() * postIdList.length)];
     const url = `https://zhiyou.smzdm.com/user/comment/ajax_set_comment?callback=jQuery111006551744323225079_${new Date().getTime()}&type=3&pid=${pId}&parentid=0&vote_id=0&vote_type=&vote_group=&content=${encodeURI(commitList[Math.floor(Math.random() * commitList.length)])}&_=new Date().getTime()`;
     axios_1.default
@@ -155,7 +153,6 @@ let smzdmCommit = (cookie) => {
  */
 const smzdmSign = (cookie) => {
     const url = `https://zhiyou.smzdm.com/user/checkin/jsonp_checkin?callback=jQuery112409568846254764496_${new Date().getTime()}&_=${new Date().getTime()}`;
-    console.log("cookie", typeof cookie, cookie);
     axios_1.default
         .get(url, {
         headers: {
@@ -168,7 +165,7 @@ const smzdmSign = (cookie) => {
         console.log("data===", data);
         if (data.indexOf('"error_code":0') != -1) {
             console.log(`什么值得买 签到成功!!!!`);
-            sendNotifyFn(`事件: 签到成功!!!!`, cookie);
+            sendNotifyFn(`事件: 签到成功!!!!已连续签到${data.data.checkin_num}`, cookie);
         }
         else {
             sendNotifyFn(`事件: 签到失败\n错误内容: ${(0, utils_1.ascii2native)(data)}`, cookie);
@@ -195,20 +192,13 @@ const commitSetTimeout = (cookie, timeNum = 1) => {
         if (timeNum == 4) {
             resolve("success");
         }
-        //延迟发评论
-        setTimeout(() => {
-            //发现频道 最新
-            getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
-            setTimeout(() => {
-                console.log("cookie==", cookie);
-                smzdmCommit(cookie);
-                console.log("评论次数", timeNum);
-            }, 5000);
-        }, (0, utils_1.getRandom)(40000, 1000000));
-        setTimeout(() => {
+        setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
+            yield getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
+            yield smzdmCommit(cookie);
+            console.log(`已评论${timeNum}次`);
             timeNum++;
             commitSetTimeout(cookie, timeNum);
-        }, (0, utils_1.getRandom)(60000, 6000000) * timeNum);
+        }), (0, utils_1.getRandom)(60000, 6000000) * timeNum);
     });
 };
 const init = () => __awaiter(void 0, void 0, void 0, function* () {
