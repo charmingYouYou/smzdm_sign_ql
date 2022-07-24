@@ -1,7 +1,7 @@
 "use strict";
 /**
  * 什么值得买自动签到脚本
- * cron: 0 1 * * * index.ts
+ * cron: 0 1 * * * index.js
  * new Env('什么值得买签到评论');
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -22,20 +22,20 @@ const cheerio_1 = __importDefault(require("cheerio"));
 const sendNotify_js_1 = require("./sendNotify.js");
 const utils_1 = require("./utils");
 const moment_1 = __importDefault(require("moment"));
-console.log(process.env);
 const SMZDM_COOKIE_LIST = (0, utils_1.getProcessEnv)("SMZDM_COOKIE_LIST") || [];
 const SMZDM_COMMIT_LIST = (0, utils_1.getProcessEnv)("SMZDM_COMMIT_LIST") || [];
 const isCommit = Boolean((0, utils_1.getProcessEnv)("SMZDM_IS_COMMIT")[0]) || true;
 let cookieList = [];
 let commitList = [];
-SMZDM_COOKIE_LIST.forEach(cookies => {
-    cookieList = [...cookieList, cookies.split("|=|")];
+SMZDM_COOKIE_LIST.forEach((cookies) => {
+    cookieList = [...cookieList, ...cookies.split("|=|")];
 });
-SMZDM_COMMIT_LIST.forEach(commit => {
-    commitList = [...commitList, commit.split("|=|")];
+SMZDM_COMMIT_LIST.forEach((commit) => {
+    commitList = [...commitList, ...commit.split("|=|")];
 });
+axios_1.default.defaults.withCredentials = true;
 axios_1.default.interceptors.request.use((config) => {
-    config.headers = Object.assign(Object.assign({}, config.headers), { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36" });
+    config.headers = Object.assign(Object.assign({}, config.headers), { "Content-Type": "application/json", "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36" });
     return config;
 });
 function getTime() {
@@ -152,6 +152,7 @@ let smzdmCommit = (cookie) => {
  */
 const smzdmSign = (cookie) => {
     const url = `https://zhiyou.smzdm.com/user/checkin/jsonp_checkin?callback=jQuery112409568846254764496_${new Date().getTime()}&_=${new Date().getTime()}`;
+    console.log("cookie", typeof cookie, cookie);
     axios_1.default
         .get(url, {
         headers: {
@@ -164,7 +165,7 @@ const smzdmSign = (cookie) => {
         console.log("data===", data);
         if (data.indexOf('"error_code":0') != -1) {
             console.log(`什么值得买 签到成功!!!!`);
-            sendNotifyFn(`事件: 签到成功!!!!\n已签到: ${data.data.checkin_num}天`, cookie);
+            sendNotifyFn(`事件: 签到成功!!!!`, cookie);
         }
         else {
             sendNotifyFn(`事件: 签到失败\n错误内容: ${(0, utils_1.ascii2native)(data)}`, cookie);
@@ -212,7 +213,7 @@ const init = () => __awaiter(void 0, void 0, void 0, function* () {
     if (cookieList.length) {
         console.log(`共找到${cookieList.length}个用户, 准备开始执行...`);
         for (const index in cookieList) {
-            const cookie = cookieList[index];
+            const cookie = encodeURI(cookieList[index]);
             console.log(`开始执行第${index + 1}用户签到...`);
             yield setTimeSmzdmSign(cookie);
             if (commitList.length) {
