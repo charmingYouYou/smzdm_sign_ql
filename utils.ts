@@ -2,7 +2,7 @@ const IS_TEST = true;
 //取随机数 min = 最小值 ； max = 最大值
 export const getRandom = (min: number, max: number) => {
   return IS_TEST
-    ? 100
+    ? 5000
     : parseInt(String(Math.random() * (max - min + 1) + min));
 };
 

@@ -1,12 +1,4 @@
 "use strict";
-/*
-什么值得买自动签到评论脚本
-更新地址：https://github.com/charmingYouYou/smzdm_sign_ql
-
-[task_local]
-#什么值得买自动签到评论
-1 1 0 * * * index.js, tag=什么值得买自动签到脚本, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
- */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -20,6 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 什么值得买自动签到评论脚本
+ * 更新地址：https://github.com/charmingYouYou/smzdm_sign_ql
+ * cron: 1 1 0 * * * index.js
+ * new Env('什么值得买自动签到评论')
+ */
 const axios_1 = __importDefault(require("axios"));
 const cheerio_1 = __importDefault(require("cheerio"));
 const sendNotify_js_1 = require("./sendNotify.js");
@@ -165,7 +163,7 @@ const smzdmSign = (cookie) => {
         console.log("data===", data);
         if (data.indexOf('"error_code":0') != -1) {
             console.log(`什么值得买 签到成功!!!!`);
-            sendNotifyFn(`事件: 签到成功!!!!已连续签到${data.data.checkin_num}`, cookie);
+            sendNotifyFn(`事件: 签到成功!!!!`, cookie);
         }
         else {
             sendNotifyFn(`事件: 签到失败\n错误内容: ${(0, utils_1.ascii2native)(data)}`, cookie);
@@ -191,6 +189,7 @@ const commitSetTimeout = (cookie, timeNum = 1) => {
     return new Promise((resolve) => {
         if (timeNum == 4) {
             resolve("success");
+            return;
         }
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
             yield getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
