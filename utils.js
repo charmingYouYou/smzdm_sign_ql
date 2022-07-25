@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ascii2native = exports.getProcessEnv = exports.getRandom = void 0;
-const IS_TEST = true;
+const IS_TEST = false;
 //取随机数 min = 最小值 ； max = 最大值
 const getRandom = (min, max) => {
     return IS_TEST

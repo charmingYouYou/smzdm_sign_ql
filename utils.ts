@@ -1,4 +1,4 @@
-const IS_TEST = true;
+const IS_TEST = false;
 //取随机数 min = 最小值 ； max = 最大值
 export const getRandom = (min: number, max: number) => {
   return IS_TEST

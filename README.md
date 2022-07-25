@@ -7,7 +7,7 @@
   - github
 
     ```shell
-    ql repo https://github.com/charmingYouYou/smzdm_sign_ql.git "index" "icon" "utils"
+    ql repo https://github.com/charmingYouYou/smzdm_sign_ql.git "index" "icon" "utils" "main" "js ts"
     ```
 
   - gitee(若github源拉取失败, 可修改为国内gitee源)
@@ -59,9 +59,16 @@
 
 ### 如何更新
 
+方法1: 
 * 在青龙中定时任务添加一条任务
   * 名称: update_smzdm_sign
   * 命令: 同上方拉取命令相同`ql repo ...`
   * 定时规则: 0 0 * * 1
 * 保存后手动运行即可
+
+方法2:
+* 青龙订阅管理中新建订阅
+  * 名称处粘贴上方拉取命令`ql repo...`
+  * 确认文件后缀为`js ts`
+  * 定时规则可以自定义(建议`interval`)
 
