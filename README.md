@@ -2,18 +2,20 @@
 
 ### 使用方式
 
+- 青龙版本 >= 2.13.7
+
 - 在青龙中执行
 
   - github
 
     ```shell
-    ql repo https://github.com/charmingYouYou/smzdm_sign_ql.git "index" "icon" "utils" "main" "js ts"
+    ql repo https://github.com/charmingYouYou/smzdm_sign_ql.git "index" "icon" "utils" "main" "ts"
     ```
 
   - gitee(若github源拉取失败, 可修改为国内gitee源)
 
     ```shell
-    ql repo https://gitee.com/charmingyouyou/smzdm_sign_ql.git "index" "icon" "utils"
+    ql repo https://gitee.com/charmingyouyou/smzdm_sign_ql.git "index" "icon" "utils" "main" "ts"
     ```
 
 - 在青龙依赖管理中安装依赖
@@ -69,6 +71,6 @@
 方法2:
 * 青龙订阅管理中新建订阅
   * 名称处粘贴上方拉取命令`ql repo...`
-  * 确认文件后缀为`js ts`
+  * 确认文件后缀为`ts`
   * 定时规则可以自定义(建议`interval`)
 

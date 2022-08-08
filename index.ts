@@ -192,7 +192,7 @@ const setTimeSmzdmSign = (cookie: string) => {
       //签到
       await smzdmSign(cookie);
       resolve("success");
-    }, getRandom(10000, 10000000));
+    }, getRandom(0, 10000));
   });
 };
 
@@ -209,7 +209,7 @@ const commitSetTimeout = (cookie: string, timeNum = 1) => {
       console.log(`已评论${timeNum}次`)
       timeNum++;
       commitSetTimeout(cookie, timeNum);
-    }, getRandom(60000, 6000000) * timeNum);
+    }, getRandom(0, 30000) * timeNum);
   });
 };
 
