@@ -1,7 +1,7 @@
 /** 
  * 什么值得买自动签到评论脚本
  * 更新地址：https://github.com/charmingYouYou/smzdm_sign_ql
- * cron: 0 15 10 * * * index.js
+ * cron: 0 15 10 * * * index.ts
  * new Env('什么值得买自动签到评论')
  */
 import axios, { AxiosRequestConfig } from "axios";
