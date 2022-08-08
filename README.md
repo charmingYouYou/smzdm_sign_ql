@@ -74,3 +74,6 @@
   * 确认文件后缀为`ts`
   * 定时规则可以自定义(建议`interval`)
 
+### 常见错误
+* 出现`ReferenceError: html is not defined`错误
+  * 在青龙中执行`rm -rf /ql/data/deps`后, 重新执行一次`ql repo...`
