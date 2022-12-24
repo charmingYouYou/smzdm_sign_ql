@@ -186,8 +186,7 @@ const smzdmSign = (cookie: string) => {
 };
 
 //延迟执行签到
-const setTimeSmzdmSign = (cookie: string, index: number) => {
-  console.log(`开始执行第${Number(index) + 1}用户签到...`);
+const setTimeSmzdmSign = (cookie: string) => {
   return new Promise((resolve) => {
     setTimeout(async () => {
       //签到
@@ -198,7 +197,7 @@ const setTimeSmzdmSign = (cookie: string, index: number) => {
 };
 
 //评论三次 执行时间自定
-const commitSetTimeout = (cookie: string, index: number, timeNum = 1) => {
+const commitSetTimeout = (cookie: string, timeNum = 1) => {
   return new Promise((resolve) => {
     if (timeNum == 4) {
       resolve("success");
@@ -207,9 +206,9 @@ const commitSetTimeout = (cookie: string, index: number, timeNum = 1) => {
     setTimeout(async () => {
       await getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/", cookie);
       await smzdmCommit(cookie);
-      console.log(`开始执行第${Number(index) + 1}用户评论, 已评论${timeNum}次`)
+      console.log(`已评论${timeNum}次`)
       timeNum++;
-      commitSetTimeout(cookie, index, timeNum);
+      commitSetTimeout(cookie, timeNum);
     }, getRandom(0, 30000) * timeNum);
   });
 };
@@ -218,17 +217,17 @@ const init = async () => {
   await getPostID(getCommitUrl(), "https://www.smzdm.com/jingxuan/");
   if (cookieList.length) {
     console.log(`共找到${cookieList.length}个用户, 准备开始执行...`);
-    const taskList = []
-    cookieList.forEach((c: string, index: number) => {
-      const cookie = encodeURI(c);
-      taskList.push(setTimeSmzdmSign(cookie, index))
-      taskList.push(commitSetTimeout(cookie, index))
-    })
-    await Promise.all(taskList).then(() => {
-      console.log('全部执行完成, finish')
-    }).catch(err => {
-      console.log('执行失败', err);
-    })
+    for (const index in cookieList) {
+      const cookie = encodeURI(cookieList[index]);
+      console.log(`开始执行第${index + 1}用户签到...`);
+      await setTimeSmzdmSign(cookie);
+      if (commitList.length) {
+        console.log(`开始执行第${index + 1}用户评论...`);
+        await commitSetTimeout(cookie);
+      } else {
+        console.log("未找到smzdm对应评论列表, 请配置SMZDM_COMMIT_LIST环境变量");
+      }
+    }
   } else {
     console.log("未找到smzdm对应cookie, 请配置SMZDM_COOKIE_LIST环境变量");
   }
